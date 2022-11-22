@@ -8,7 +8,7 @@ plugins {
 android {
     compileSdk = 33
     defaultConfig {
-        applicationId = "com.kashif.kmmnewsapp.android"
+        applicationId = "com.llamalabb.phillygarbageday.android"
         minSdk = 23
         targetSdk = 33
         versionCode = 1

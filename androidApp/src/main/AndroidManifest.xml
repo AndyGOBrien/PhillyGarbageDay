@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-package="com.kashif.kmmnewsapp.android">
+package="com.llamalabb.phillygarbageday.android">
 
 <uses-permission android:name="android.permission.INTERNET" />
 
 <application
-    android:name=".KmmNewsAPP"
+    android:name="com.llamalabb.phillygarbageday.android.PhillyGarbageDayApp"
     android:allowBackup="false"
     android:hardwareAccelerated="true"
     android:label="Kmm News"
@@ -14,7 +14,7 @@ package="com.kashif.kmmnewsapp.android">
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
     <activity
-        android:name=".MainActivity"
+        android:name="com.llamalabb.phillygarbageday.android.MainActivity"
         android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />

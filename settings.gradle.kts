@@ -6,6 +6,6 @@ pluginManagement {
     }
 }
 
-rootProject.name = "KMMNewsAPP"
+rootProject.name = "PhillyGarbageDay"
 include(":androidApp")
 include(":shared")
