@@ -39,11 +39,12 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.getViewModel
 
 
-@RootNavGraph(start = true)
+@RootNavGraph
 @Destination
 @Composable
 fun Home(
-    destinationsNavigator: DestinationsNavigator, viewModel: HomeScreenViewModel = getViewModel()
+    destinationsNavigator: DestinationsNavigator,
+    viewModel: HomeScreenViewModel = getViewModel()
 ) {
 
     LaunchedEffect(key1 = Unit) {
@@ -55,7 +56,10 @@ fun Home(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
-private fun Home(state: HomeScreenState, destinationsNavigator: DestinationsNavigator) {
+private fun Home(
+    state: HomeScreenState,
+    destinationsNavigator: DestinationsNavigator
+) {
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         KmmNewsAPPTopBar(
             titleRes = R.string.app_heading,

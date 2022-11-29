@@ -40,7 +40,6 @@ dependencies {
     implementation(project(":shared"))
 
     with(ComposeDestination){
-
         implementation(composeDestination)
         ksp(composeDestinationPlugin)
     }
@@ -57,7 +56,7 @@ dependencies {
 
         }
         implementation(composeActivity) {
-            because("We are not using  xml its better to use compose activity ")
+            because("We are not using xml its better to use compose activity ")
         }
 
 
@@ -72,6 +71,7 @@ dependencies {
         implementation(composeUI) {
             because("Supports compose ")
         }
+        implementation(composeConstraintLayout)
     }
 
     implementation(Koin.koinAndroid)

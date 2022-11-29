@@ -1,5 +1,6 @@
 package com.llamalabb.phillygarbageday
 
+import com.llamalabb.phillygarbageday.presentation.addressinput.AddressInputViewModel
 import com.llamalabb.phillygarbageday.presentation.home.HomeScreenViewModel
 import com.llamalabb.phillygarbageday.presentation.newdetails.NewsDetailsViewModel
 import com.llamalabb.phillygarbageday.presentation.readlater.ReadLaterViewModel
@@ -9,21 +10,14 @@ import org.koin.core.component.get
 import org.koin.dsl.module
 
 actual fun platformModule() = module {
-    single {
-        Darwin.create()
-    }
+    single { Darwin.create() }
 
     //single or factory can be used to get a view-model object for swiftui
 
-    single {
-        HomeScreenViewModel(get())
-    }
-    factory {
-        NewsDetailsViewModel(get())
-    }
-    factory {
-        ReadLaterViewModel(get())
-    }
+    single { HomeScreenViewModel(get()) }
+    single { AddressInputViewModel() }
+    factory { NewsDetailsViewModel(get()) }
+    factory { ReadLaterViewModel(get()) }
 }
 
 /**
@@ -33,10 +27,9 @@ actual fun platformModule() = module {
  */
 object ViewModels : KoinComponent {
     fun getHomeViewModel() = get<HomeScreenViewModel>()
+    fun getAddressViewModel() = get<AddressInputViewModel>()
     fun getNewsDetailsViewModel() = get<NewsDetailsViewModel>()
-
     fun getReadLaterViewModel() = get<ReadLaterViewModel>()
-
 }
 
 
