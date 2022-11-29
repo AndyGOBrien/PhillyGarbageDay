@@ -22,7 +22,7 @@ class AddressInputScreenMock : PreviewParameterProvider<State<AddressInputScreen
     private fun getLoadedState() = mutableStateOf(
         AddressInputScreenState(
             isLoading = false,
-            addresses = (0..10).map {
+            addresses = (0..9).map {
                 AddressItem("$it Random St", "$it$it$it$it$it", "$it km")
             }
         )
