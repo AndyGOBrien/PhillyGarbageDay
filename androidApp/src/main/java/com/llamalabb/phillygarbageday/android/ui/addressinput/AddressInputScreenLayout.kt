@@ -26,11 +26,11 @@ import com.llamalabb.phillygarbageday.presentation.addressinput.AddressInputScre
 import com.llamalabb.phillygarbageday.presentation.addressinput.AddressItem
 import com.llamalabb.phillygarbageday.presentation.addressinput.BaseAction
 
-typealias Dispatcher = (BaseAction) -> Unit
+typealias Dispatch = (BaseAction) -> Unit
 
 @OptIn(ExperimentalMaterial3Api::class)
 class AddressInputScreenLayout(
-    private val dispatcher: Dispatcher? = null
+    private val dispatch: Dispatch = { /* noop */ }
 ) {
 
     @Preview(showBackground = true)
@@ -54,7 +54,7 @@ class AddressInputScreenLayout(
     private fun AddressInputField(value: String) {
         OutlinedTextField(
             value = value,
-            onValueChange = { dispatcher?.invoke(UserInputAddressText(it)) },
+            onValueChange = { dispatch(UserInputAddressText(it)) },
             label = { Text("Address") },
             modifier = Modifier
                 .fillMaxWidth()
@@ -65,7 +65,7 @@ class AddressInputScreenLayout(
     @Composable
     private fun ClearContentButton() {
         Button(
-            onClick = { dispatcher?.invoke(UserTappedClearContent) },
+            onClick = { dispatch(UserTappedClearContent) },
             shape = ShapeDefaults.ExtraSmall,
             modifier = Modifier
                 .fillMaxWidth()
@@ -78,7 +78,7 @@ class AddressInputScreenLayout(
     @Composable
     private fun LoadDataButton() {
         Button(
-            onClick = { dispatcher?.invoke(UserTappedLoadData) },
+            onClick = { dispatch(UserTappedLoadData) },
             shape = ShapeDefaults.ExtraSmall,
             modifier = Modifier
                 .fillMaxWidth()
@@ -92,7 +92,9 @@ class AddressInputScreenLayout(
     private fun CenteredLoader(isLoading: Boolean) {
         if(isLoading) {
             Box(
-                modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator(Modifier.size(100.dp))
@@ -103,8 +105,10 @@ class AddressInputScreenLayout(
     @Composable
     private fun RecentAddressItem(addressItem: AddressItem) {
         Card (
-            modifier = Modifier.fillMaxWidth().padding(16.dp, 4.dp),
-            onClick = { dispatcher?.invoke(UserTappedAddressItem(addressItem)) }
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp, 4.dp),
+            onClick = { dispatch(UserTappedAddressItem(addressItem)) }
         ) {
             ConstraintLayout(
                 Modifier

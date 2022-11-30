@@ -15,8 +15,8 @@ class AddressInputViewModel : ViewModel() {
     private fun reduce(action: BaseAction, state: AddressInputScreenState) {
         _state.value = state.copy(
             isLoading = reduceIsLoading(action, state),
-            addresses = reduceAddresses(action, state),
             addressInput = reduceAddressInput(action, state),
+            addresses = reduceAddresses(action, state),
         )
     }
 
@@ -64,7 +64,7 @@ class AddressInputViewModel : ViewModel() {
         }
     }
 
-    private fun createMockAddressList() = (1..10).map {
+    private fun createMockAddressList() = (0..9).map {
         AddressItem("$it Random St", "$it$it$it$it$it", "$it km")
     }
 }
