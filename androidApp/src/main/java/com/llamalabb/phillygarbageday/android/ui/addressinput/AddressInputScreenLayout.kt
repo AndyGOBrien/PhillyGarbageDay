@@ -1,5 +1,6 @@
 package com.llamalabb.phillygarbageday.android.ui.addressinput
 
+import Dispatch
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,9 +25,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.llamalabb.phillygarbageday.presentation.addressinput.AddressInputScreenAction.*
 import com.llamalabb.phillygarbageday.presentation.addressinput.AddressInputScreenState
 import com.llamalabb.phillygarbageday.presentation.addressinput.AddressItem
-import com.llamalabb.phillygarbageday.presentation.addressinput.BaseAction
 
-typealias Dispatch = (BaseAction) -> Unit
 
 @OptIn(ExperimentalMaterial3Api::class)
 class AddressInputScreenLayout(

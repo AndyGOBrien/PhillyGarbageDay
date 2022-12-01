@@ -1,5 +1,6 @@
 package com.llamalabb.phillygarbageday.presentation.addressinput
 
+import BaseAction
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -90,5 +91,3 @@ sealed class AddressInputScreenAction : BaseAction {
     class UserInputAddressText(val text: String) : AddressInputScreenAction()
     class DataLoadSuccess(val addressList: List<AddressItem>) : AddressInputScreenAction()
 }
-
-interface BaseAction
