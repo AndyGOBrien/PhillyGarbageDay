@@ -1,10 +1,7 @@
 package com.llamalabb.phillygarbageday.domain.domain_model
 
-import com.llamalabb.phillygarbageday.CommonParcelable
-import com.llamalabb.phillygarbageday.CommonParcelize
 import com.llamalabb.phillygarbageday.data.local.dao.HeadlineDAO
 
-@CommonParcelize
 data class HeadlineDomainModel(
 
     var author: String,
@@ -22,7 +19,7 @@ data class HeadlineDomainModel(
     val url: String,
 
     val urlToImage: String
-) : CommonParcelable
+)
 
 fun HeadlineDomainModel.asDao(): HeadlineDAO {
     return HeadlineDAO().also {

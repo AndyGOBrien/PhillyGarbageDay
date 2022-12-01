@@ -27,7 +27,6 @@ import coil.size.Scale
 import com.llamalabb.phillygarbageday.android.R
 import com.llamalabb.phillygarbageday.android.ui.components.KmmNewsAPPTopBar
 import com.llamalabb.phillygarbageday.android.ui.destinations.ReadLaterScreenDestination
-import com.llamalabb.phillygarbageday.android.ui.destinations.NewsDetailsScreenDestination
 import com.llamalabb.phillygarbageday.android.ui.theme.TrashTheme
 import com.llamalabb.phillygarbageday.domain.domain_model.HeadlineDomainModel
 import com.llamalabb.phillygarbageday.presentation.home.HomeScreenSideEvent
@@ -39,11 +38,12 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.getViewModel
 
 
-@RootNavGraph(start = true)
+@RootNavGraph
 @Destination
 @Composable
 fun Home(
-    destinationsNavigator: DestinationsNavigator, viewModel: HomeScreenViewModel = getViewModel()
+    destinationsNavigator: DestinationsNavigator,
+    viewModel: HomeScreenViewModel = getViewModel()
 ) {
 
     LaunchedEffect(key1 = Unit) {
@@ -55,7 +55,10 @@ fun Home(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
-private fun Home(state: HomeScreenState, destinationsNavigator: DestinationsNavigator) {
+private fun Home(
+    state: HomeScreenState,
+    destinationsNavigator: DestinationsNavigator
+) {
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         KmmNewsAPPTopBar(
             titleRes = R.string.app_heading,
@@ -116,7 +119,7 @@ fun LazyListScope.headlines(
         HeadlinesCard(
             headlineDomainModel = item,
             modifier = Modifier.clickable {
-                destinationsNavigator.navigate(NewsDetailsScreenDestination(item))
+//                destinationsNavigator.navigate(NewsDetailsScreenDestination(item))
             }
         )
     }

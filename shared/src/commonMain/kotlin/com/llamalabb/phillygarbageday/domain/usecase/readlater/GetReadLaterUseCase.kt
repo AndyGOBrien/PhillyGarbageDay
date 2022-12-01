@@ -1,10 +1,10 @@
 package com.llamalabb.phillygarbageday.domain.usecase.readlater
 
 import com.llamalabb.phillygarbageday.data.local.dao.asDomainModel
-import com.llamalabb.phillygarbageday.data.repository.AbstractRepository
+import com.llamalabb.phillygarbageday.data.repository.IAddressRepository
 import kotlinx.coroutines.flow.flow
 
-class GetReadLaterUseCase(private val repository: AbstractRepository) {
+class GetReadLaterUseCase(private val repository: IAddressRepository) {
 
     operator fun invoke() = flow {
         val response = repository.getAllReadLater().asDomainModel()

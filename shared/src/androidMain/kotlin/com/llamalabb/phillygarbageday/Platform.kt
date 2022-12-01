@@ -2,6 +2,7 @@ package com.llamalabb.phillygarbageday
 
 
 import android.os.Parcelable
+import com.llamalabb.phillygarbageday.presentation.addressinput.AddressInputViewModel
 import com.llamalabb.phillygarbageday.presentation.home.HomeScreenViewModel
 import com.llamalabb.phillygarbageday.presentation.newdetails.NewsDetailsViewModel
 import com.llamalabb.phillygarbageday.presentation.readlater.ReadLaterViewModel
@@ -13,7 +14,6 @@ import org.koin.dsl.module
 /**
  * shared implementation of parcelable
  */
-actual typealias CommonParcelize = Parcelize
 
 actual typealias CommonParcelable = Parcelable
 
@@ -21,9 +21,7 @@ actual typealias CommonParcelable = Parcelable
 actual fun platformModule() = module {
 
 
-    single {
-        Android.create()
-    }
+    single { Android.create() }
     /**
      *
      * for android koin has a special viewmodel scope that we can use
@@ -31,19 +29,12 @@ actual fun platformModule() = module {
      *
      */
 
-    viewModel {
-        HomeScreenViewModel(
-            get()
-        )
-    }
+    viewModel { HomeScreenViewModel(get()) }
 
-    viewModel {
-        NewsDetailsViewModel(get())
-    }
+    viewModel { AddressInputViewModel(get()) }
 
-    viewModel {
-        ReadLaterViewModel(get())
-    }
+    viewModel { NewsDetailsViewModel(get()) }
 
+    viewModel { ReadLaterViewModel(get()) }
 
 }
