@@ -4,7 +4,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.llamalabb.phillygarbageday.presentation.addressinput.AddressInputScreenState
-import com.llamalabb.phillygarbageday.presentation.addressinput.AddressItem
 
 
 class AddressInputScreenMock : PreviewParameterProvider<State<AddressInputScreenState>> {
@@ -22,13 +21,7 @@ class AddressInputScreenMock : PreviewParameterProvider<State<AddressInputScreen
     private fun getLoadedState() = mutableStateOf(
         AddressInputScreenState(
             isLoading = false,
-            addresses = createMockAddresses()
+            trashPickUpDay = "Wednesday"
         )
     )
-
-    companion object {
-        fun createMockAddresses() = (0..9).map {
-            AddressItem("$it Random St", "$it$it$it$it$it", "$it km")
-        }
-    }
 }

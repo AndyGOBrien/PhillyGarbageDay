@@ -7,10 +7,10 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 
-class ImplKtorService(
+class PhillyApiService(
     private val httpClient: HttpClient,
     private val baseUrl: String
-) : AbstractKtorService() {
+) : IPhillyApiService {
 
     private val apikey = "a52b414d7a4e496a81b9787ebf8993f2"
     override suspend fun getHeadLines(

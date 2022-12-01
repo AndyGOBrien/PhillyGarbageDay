@@ -1,12 +1,12 @@
 package com.llamalabb.phillygarbageday.domain.di
 
 import com.llamalabb.phillygarbageday.data.local.dao.HeadlineDAO
-import com.llamalabb.phillygarbageday.data.local.service.AbstractRealmService
-import com.llamalabb.phillygarbageday.data.local.service.ImplRealmService
-import com.llamalabb.phillygarbageday.data.remote.service.AbstractKtorService
-import com.llamalabb.phillygarbageday.data.remote.service.ImplKtorService
-import com.llamalabb.phillygarbageday.data.repository.AbstractRepository
-import com.llamalabb.phillygarbageday.data.repository.ImplRepository
+import com.llamalabb.phillygarbageday.data.local.service.IAddressRealmService
+import com.llamalabb.phillygarbageday.data.local.service.AddressRealmService
+import com.llamalabb.phillygarbageday.data.remote.service.IPhillyApiService
+import com.llamalabb.phillygarbageday.data.remote.service.PhillyApiService
+import com.llamalabb.phillygarbageday.data.repository.IAddressRepository
+import com.llamalabb.phillygarbageday.data.repository.AddressRepository
 import com.llamalabb.phillygarbageday.domain.usecase.home.GetHeadlinesUseCase
 import com.llamalabb.phillygarbageday.domain.usecase.newsdetails.AddToReadLaterUseCase
 import com.llamalabb.phillygarbageday.domain.usecase.readlater.GetReadLaterUseCase
@@ -50,22 +50,22 @@ fun getHelperModule() = module {
 
 fun getDateModule(enableNetworkLogs: Boolean, baseUrl: String) = module {
 
-    single<AbstractRepository> {
-        ImplRepository(
+    single<IAddressRepository> {
+        AddressRepository(
             get(),
             get()
         )
     }
 
-    single<AbstractKtorService> {
-        ImplKtorService(
+    single<IPhillyApiService> {
+        PhillyApiService(
             get(),
             baseUrl
         )
     }
 
-    single<AbstractRealmService> {
-        ImplRealmService(
+    single<IAddressRealmService> {
+        AddressRealmService(
             get()
         )
     }

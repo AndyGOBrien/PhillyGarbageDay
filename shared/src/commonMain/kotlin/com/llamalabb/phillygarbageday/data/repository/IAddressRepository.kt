@@ -5,15 +5,15 @@ import com.llamalabb.phillygarbageday.data.remote.dto.AddressDataDTO
 import com.llamalabb.phillygarbageday.data.remote.dto.HeadlinesDTO
 
 
-abstract class AbstractRepository {
+interface IAddressRepository {
 
-    abstract suspend fun getAllHeadlines(
+    suspend fun getAllHeadlines(
         page: Int,
         pageSize: Int,
         country: String
     ): HeadlinesDTO
 
-    abstract suspend fun addToReadLater(headlineDAO: HeadlineDAO)
-    abstract suspend fun getAllReadLater(): List<HeadlineDAO>
-    abstract suspend fun getAddressInfo(address: String): AddressDataDTO
+    suspend fun addToReadLater(headlineDAO: HeadlineDAO)
+    suspend fun getAllReadLater(): List<HeadlineDAO>
+    suspend fun getAddressInfo(address: String): AddressDataDTO
 }

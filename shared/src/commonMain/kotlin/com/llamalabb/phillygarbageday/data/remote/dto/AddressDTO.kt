@@ -1,7 +1,7 @@
 package com.llamalabb.phillygarbageday.data.remote.dto
 
 import com.llamalabb.phillygarbageday.domain.domain_model.AddressData
-import com.llamalabb.phillygarbageday.domain.domain_model.DayOfWeek
+import kotlinx.datetime.DayOfWeek
 import kotlinx.serialization.SerialName
 
 @kotlinx.serialization.Serializable

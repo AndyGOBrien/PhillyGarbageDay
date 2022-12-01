@@ -1,15 +1,15 @@
 package com.llamalabb.phillygarbageday.data.repository
 
 import com.llamalabb.phillygarbageday.data.local.dao.HeadlineDAO
-import com.llamalabb.phillygarbageday.data.local.service.AbstractRealmService
+import com.llamalabb.phillygarbageday.data.local.service.IAddressRealmService
 import com.llamalabb.phillygarbageday.data.remote.dto.AddressDataDTO
-import com.llamalabb.phillygarbageday.data.remote.service.AbstractKtorService
+import com.llamalabb.phillygarbageday.data.remote.service.IPhillyApiService
 
 
-class ImplRepository(
-    private val ktorService: AbstractKtorService,
-    private val realmService: AbstractRealmService
-) : AbstractRepository() {
+class AddressRepository(
+    private val ktorService: IPhillyApiService,
+    private val realmService: IAddressRealmService
+) : IAddressRepository {
 
 
     override suspend fun getAllHeadlines(
