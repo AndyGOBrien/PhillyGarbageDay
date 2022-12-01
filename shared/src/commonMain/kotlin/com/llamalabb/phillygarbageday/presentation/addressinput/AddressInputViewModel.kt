@@ -12,6 +12,14 @@ class AddressInputViewModel : ViewModel() {
     private val _state = MutableStateFlow(AddressInputScreenState())
     val state = _state.asStateFlow()
 
+    fun dispatch(action: BaseAction) {
+        reduce(action, _state.value)
+        launchSideEffects(action)
+    }
+
+    /** Reducers */
+    //region Reducers
+
     private fun reduce(action: BaseAction, state: AddressInputScreenState) {
         _state.value = state.copy(
             isLoading = reduceIsLoading(action, state),
@@ -48,6 +56,18 @@ class AddressInputViewModel : ViewModel() {
         else -> state.addresses
     }
 
+    //endregion
+
+    /** Side Effects */
+    //region Side Effects
+
+    private fun launchSideEffects(action: BaseAction) {
+        when(action) {
+            is UserTappedLoadData -> loadDataSideEffect()
+            else -> Unit
+        }
+    }
+
     private fun loadDataSideEffect() {
         viewModelScope.launch {
             delay(3000)
@@ -56,13 +76,7 @@ class AddressInputViewModel : ViewModel() {
         }
     }
 
-    fun dispatch(action: BaseAction) {
-        reduce(action, _state.value)
-        when(action) {
-            is UserTappedLoadData -> loadDataSideEffect()
-            else -> Unit
-        }
-    }
+    //endregion
 
     private fun createMockAddressList() = (0..9).map {
         AddressItem("$it Random St", "$it$it$it$it$it", "$it km")
