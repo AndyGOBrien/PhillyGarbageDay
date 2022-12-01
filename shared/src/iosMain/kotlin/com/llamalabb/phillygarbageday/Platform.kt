@@ -15,7 +15,7 @@ actual fun platformModule() = module {
     //single or factory can be used to get a view-model object for swiftui
 
     single { HomeScreenViewModel(get()) }
-    single { AddressInputViewModel() }
+    single { AddressInputViewModel(get()) }
     factory { NewsDetailsViewModel(get()) }
     factory { ReadLaterViewModel(get()) }
 }

@@ -43,11 +43,22 @@ class AddressInputScreenLayout(
             LazyColumn {
                 item { AddressInputField(addressInput) }
                 item { ClearContentButton() }
-                item { LoadDataButton() }
+                item { LoadDataButton(addressInput) }
+                item { TrashPickUpDay(trashPickUpDay) }
                 item { addresses.forEach { RecentAddressItem(it) } }
             }
             CenteredLoader(isLoading)
         }
+    }
+
+    @Composable
+    private fun TrashPickUpDay(trashPickUpDay: String) {
+        Text(
+            text = "Trash Pick Up Day: $trashPickUpDay",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        )
     }
 
     @Composable
@@ -76,9 +87,9 @@ class AddressInputScreenLayout(
     }
 
     @Composable
-    private fun LoadDataButton() {
+    private fun LoadDataButton(addressInput: String) {
         Button(
-            onClick = { dispatcher?.invoke(UserTappedLoadData) },
+            onClick = { dispatcher?.invoke(UserTappedLoadData(addressInput)) },
             shape = ShapeDefaults.ExtraSmall,
             modifier = Modifier
                 .fillMaxWidth()
@@ -90,9 +101,11 @@ class AddressInputScreenLayout(
 
     @Composable
     private fun CenteredLoader(isLoading: Boolean) {
-        if(isLoading) {
+        if (isLoading) {
             Box(
-                modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator(Modifier.size(100.dp))
@@ -102,14 +115,17 @@ class AddressInputScreenLayout(
 
     @Composable
     private fun RecentAddressItem(addressItem: AddressItem) {
-        Card (
-            modifier = Modifier.fillMaxWidth().padding(16.dp, 4.dp),
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp, 4.dp),
             onClick = { dispatcher?.invoke(UserTappedAddressItem(addressItem)) }
         ) {
             ConstraintLayout(
                 Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)) {
+                    .padding(16.dp)
+            ) {
 
                 val (startText, endText, bottomText) = createRefs()
 

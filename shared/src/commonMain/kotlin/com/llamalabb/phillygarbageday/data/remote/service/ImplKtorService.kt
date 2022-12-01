@@ -1,9 +1,11 @@
 package com.llamalabb.phillygarbageday.data.remote.service
 
+import com.llamalabb.phillygarbageday.data.remote.dto.AddressDataDTO
 import com.llamalabb.phillygarbageday.data.remote.dto.HeadlinesDTO
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
+import io.ktor.http.*
 
 class ImplKtorService(
     private val httpClient: HttpClient,
@@ -14,13 +16,20 @@ class ImplKtorService(
     override suspend fun getHeadLines(
         pageSize: Int,
         page: Int,
-        country: String,
-
+        country: String
     ): HeadlinesDTO = httpClient.get("$baseUrl/${EndPoints.HEADLINES}") {
         header("x-api-key", apikey)
         parameter("country", country)
         parameter("pageSize", pageSize)
         parameter("page", page)
+    }.body()
+
+    override suspend fun getAddressDetails(
+        address: String
+    ): AddressDataDTO = httpClient.get("$baseUrl/${EndPoints.ADDRESSES}") {
+        url {
+            appendEncodedPathSegments(address)
+        }
     }.body()
 
 }

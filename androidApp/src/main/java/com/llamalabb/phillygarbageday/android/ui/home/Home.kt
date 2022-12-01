@@ -27,7 +27,6 @@ import coil.size.Scale
 import com.llamalabb.phillygarbageday.android.R
 import com.llamalabb.phillygarbageday.android.ui.components.KmmNewsAPPTopBar
 import com.llamalabb.phillygarbageday.android.ui.destinations.ReadLaterScreenDestination
-import com.llamalabb.phillygarbageday.android.ui.destinations.NewsDetailsScreenDestination
 import com.llamalabb.phillygarbageday.android.ui.theme.KMMNewsTheme
 import com.llamalabb.phillygarbageday.domain.domain_model.HeadlineDomainModel
 import com.llamalabb.phillygarbageday.presentation.home.HomeScreenSideEvent
@@ -120,7 +119,7 @@ fun LazyListScope.headlines(
         HeadlinesCard(
             headlineDomainModel = item,
             modifier = Modifier.clickable {
-                destinationsNavigator.navigate(NewsDetailsScreenDestination(item))
+//                destinationsNavigator.navigate(NewsDetailsScreenDestination(item))
             }
         )
     }

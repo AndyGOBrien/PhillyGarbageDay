@@ -2,6 +2,7 @@ package com.llamalabb.phillygarbageday.data.repository
 
 import com.llamalabb.phillygarbageday.data.local.dao.HeadlineDAO
 import com.llamalabb.phillygarbageday.data.local.service.AbstractRealmService
+import com.llamalabb.phillygarbageday.data.remote.dto.AddressDataDTO
 import com.llamalabb.phillygarbageday.data.remote.service.AbstractKtorService
 
 
@@ -27,6 +28,9 @@ class ImplRepository(
     }
 
     override suspend fun getAllReadLater() = realmService.getReadLater()
+
+    override suspend fun getAddressInfo(address: String): AddressDataDTO =
+        ktorService.getAddressDetails(address)
 
 }
 

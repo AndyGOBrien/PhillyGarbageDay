@@ -14,7 +14,6 @@ import org.koin.dsl.module
 /**
  * shared implementation of parcelable
  */
-actual typealias CommonParcelize = Parcelize
 
 actual typealias CommonParcelable = Parcelable
 
@@ -32,7 +31,7 @@ actual fun platformModule() = module {
 
     viewModel { HomeScreenViewModel(get()) }
 
-    viewModel { AddressInputViewModel() }
+    viewModel { AddressInputViewModel(get()) }
 
     viewModel { NewsDetailsViewModel(get()) }
 
