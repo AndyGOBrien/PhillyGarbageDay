@@ -12,7 +12,7 @@ class PhillyApiService(
 
     companion object {
         private const val BASE_URL = "https://api.phila.gov/ais/v1"
-        const val ADDRESS_ENDPOINT = "addresses"
+        private const val ADDRESS_ENDPOINT = "addresses"
     }
 
     override suspend fun getAddressDetails(
