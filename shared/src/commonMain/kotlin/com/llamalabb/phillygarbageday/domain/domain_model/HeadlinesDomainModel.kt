@@ -3,21 +3,13 @@ package com.llamalabb.phillygarbageday.domain.domain_model
 import com.llamalabb.phillygarbageday.data.local.dao.HeadlineDAO
 
 data class HeadlineDomainModel(
-
     var author: String,
-
     var content: String,
-
     val description: String,
-
     val publishedAt: String,
-
     val source: String,
-
     val title: String,
-
     val url: String,
-
     val urlToImage: String
 )
 
