@@ -68,22 +68,21 @@ class AddressInputViewModel(private val repo: AbstractRepository) : ViewModel() 
         else -> state.trashPickUpDay
     }
 
-    private fun loadDataSideEffect(action: UserTappedLoadData) {
     //endregion
 
     /** Side Effects */
     //region Side Effects
 
     private fun launchSideEffects(action: BaseAction) {
-        when(action) {
-            is UserTappedLoadData -> loadDataSideEffect()
+        when (action) {
+            is UserTappedLoadData -> loadAddressDataSideEffect(action.address)
             else -> Unit
         }
     }
 
-    private fun loadDataSideEffect() {
+    private fun loadAddressDataSideEffect(address: String) {
         viewModelScope.launch {
-            val result = AddressDataDTO(repo.getAddressInfo(action.address).features)
+            val result = AddressDataDTO(repo.getAddressInfo(address).features)
             dispatch(
                 DataLoadSuccess(
                     result.asDomainModel().garbageDay.toString(),
