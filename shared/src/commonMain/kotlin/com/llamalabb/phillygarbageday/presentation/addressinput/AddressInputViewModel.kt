@@ -64,6 +64,7 @@ class AddressInputViewModel(private val repo: IAddressRepository) : ViewModel() 
         state: AddressInputScreenState
     ): String = when (action) {
         is DataLoadSuccess -> action.dayOfPickUp
+        is DataLoadError -> ""
         else -> state.trashPickUpDay
     }
 
