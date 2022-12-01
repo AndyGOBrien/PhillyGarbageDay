@@ -27,7 +27,7 @@ import com.google.accompanist.web.rememberWebViewState
 import com.llamalabb.phillygarbageday.android.R
 import com.llamalabb.phillygarbageday.android.ui.components.KmmNewsAPPDialog
 import com.llamalabb.phillygarbageday.android.ui.components.KmmNewsAPPTopBar
-import com.llamalabb.phillygarbageday.android.ui.theme.KMMNewsTheme
+import com.llamalabb.phillygarbageday.android.ui.theme.TrashTheme
 import com.llamalabb.phillygarbageday.domain.domain_model.HeadlineDomainModel
 import com.llamalabb.phillygarbageday.presentation.newdetails.NewsDetailsScreenEvent
 import com.llamalabb.phillygarbageday.presentation.newdetails.NewsDetailsScreenState
@@ -201,7 +201,7 @@ fun LazyListScope.headlineHeader(headline: HeadlineDomainModel, webviewState: We
 @Preview
 @Composable
 fun NewsDetailScreenAppBarPreview() {
-    KMMNewsTheme() {
+    TrashTheme() {
         // NewsDetails(HeadlineDomainModel())
     }
 

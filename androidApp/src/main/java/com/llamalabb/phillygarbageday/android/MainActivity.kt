@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.llamalabb.phillygarbageday.android.ui.NavGraphs
-import com.llamalabb.phillygarbageday.android.ui.theme.KMMNewsTheme
+import com.llamalabb.phillygarbageday.android.ui.theme.TrashTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
 
 
@@ -14,7 +14,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            KMMNewsTheme {
+            TrashTheme {
                DestinationsNavHost(navGraph = NavGraphs.root)
             }
         }

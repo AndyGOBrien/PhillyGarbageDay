@@ -28,7 +28,7 @@ import com.llamalabb.phillygarbageday.android.R
 import com.llamalabb.phillygarbageday.android.ui.components.KmmNewsAPPTopBar
 import com.llamalabb.phillygarbageday.android.ui.destinations.ReadLaterScreenDestination
 import com.llamalabb.phillygarbageday.android.ui.destinations.NewsDetailsScreenDestination
-import com.llamalabb.phillygarbageday.android.ui.theme.KMMNewsTheme
+import com.llamalabb.phillygarbageday.android.ui.theme.TrashTheme
 import com.llamalabb.phillygarbageday.domain.domain_model.HeadlineDomainModel
 import com.llamalabb.phillygarbageday.presentation.home.HomeScreenSideEvent
 import com.llamalabb.phillygarbageday.presentation.home.HomeScreenState
@@ -187,7 +187,7 @@ fun HeadlinesCard(
 @Preview
 @Composable
 fun HomePreview() {
-    KMMNewsTheme {
+    TrashTheme {
         HeadlinesCard(headlineDomainModel = HeadlineDomainModel(
             "Kashif Mehmood",
             "KMM has gone beta and is near to the final release with the new memory model.",

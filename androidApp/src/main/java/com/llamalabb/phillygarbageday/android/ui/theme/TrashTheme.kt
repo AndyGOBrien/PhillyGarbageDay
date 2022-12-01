@@ -72,7 +72,7 @@ private val DarkColors = darkColorScheme(
 )
 
 @Composable
-fun KMMNewsTheme(
+fun TrashTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
@@ -86,8 +86,8 @@ fun KMMNewsTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        shapes = KMMNewsShapes,
-        typography = KmmNewsTypography,
+        shapes = TrashShapes,
+        typography = TrashTypography,
         content = content
     )
 }

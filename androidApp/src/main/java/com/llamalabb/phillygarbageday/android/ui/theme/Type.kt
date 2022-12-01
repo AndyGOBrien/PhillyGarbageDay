@@ -31,7 +31,7 @@ val defaultTextStyle = TextStyle(
     )
 )
 
-val KmmNewsTypography = Typography(
+val TrashTypography = Typography(
     displayLarge = defaultTextStyle.copy(
         fontSize = 57.sp, lineHeight = 64.sp, letterSpacing = (-0.25).sp
     ),
