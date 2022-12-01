@@ -1,5 +1,6 @@
 package com.llamalabb.phillygarbageday.android.ui.addressinput
 
+import Dispatch
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,13 +25,11 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.llamalabb.phillygarbageday.presentation.addressinput.AddressInputScreenAction.*
 import com.llamalabb.phillygarbageday.presentation.addressinput.AddressInputScreenState
 import com.llamalabb.phillygarbageday.presentation.addressinput.AddressItem
-import com.llamalabb.phillygarbageday.presentation.addressinput.BaseAction
 
-typealias Dispatcher = (BaseAction) -> Unit
 
 @OptIn(ExperimentalMaterial3Api::class)
 class AddressInputScreenLayout(
-    private val dispatcher: Dispatcher? = null
+    private val dispatch: Dispatch = { /* noop */ }
 ) {
 
     @Preview(showBackground = true)
@@ -65,7 +64,7 @@ class AddressInputScreenLayout(
     private fun AddressInputField(value: String) {
         OutlinedTextField(
             value = value,
-            onValueChange = { dispatcher?.invoke(UserInputAddressText(it)) },
+            onValueChange = { dispatch(UserInputAddressText(it)) },
             label = { Text("Address") },
             modifier = Modifier
                 .fillMaxWidth()
@@ -76,7 +75,7 @@ class AddressInputScreenLayout(
     @Composable
     private fun ClearContentButton() {
         Button(
-            onClick = { dispatcher?.invoke(UserTappedClearContent) },
+            onClick = { dispatch(UserTappedClearContent) },
             shape = ShapeDefaults.ExtraSmall,
             modifier = Modifier
                 .fillMaxWidth()
@@ -89,7 +88,7 @@ class AddressInputScreenLayout(
     @Composable
     private fun LoadDataButton(addressInput: String) {
         Button(
-            onClick = { dispatcher?.invoke(UserTappedLoadData(addressInput)) },
+            onClick = { dispatch(UserTappedLoadData(addressInput)) },
             shape = ShapeDefaults.ExtraSmall,
             modifier = Modifier
                 .fillMaxWidth()
@@ -115,11 +114,11 @@ class AddressInputScreenLayout(
 
     @Composable
     private fun RecentAddressItem(addressItem: AddressItem) {
-        Card(
+        Card (
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp, 4.dp),
-            onClick = { dispatcher?.invoke(UserTappedAddressItem(addressItem)) }
+            onClick = { dispatch(UserTappedAddressItem(addressItem)) }
         ) {
             ConstraintLayout(
                 Modifier
