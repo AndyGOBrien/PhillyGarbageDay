@@ -1,4 +1,4 @@
-package com.llamalabb.phillygarbageday.android.ui.addressinput
+package com.llamalabb.phillygarbageday.android.ui.trashday
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -6,10 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,53 +19,34 @@ import androidx.compose.ui.unit.dp
 import com.llamalabb.phillygarbageday.presentation.Dispatch
 import com.llamalabb.phillygarbageday.presentation.addressinput.AddressInputScreenAction.*
 import com.llamalabb.phillygarbageday.presentation.addressinput.AddressInputScreenState
+import com.llamalabb.phillygarbageday.presentation.trashday.TrashDayState
 
-
-@OptIn(ExperimentalMaterial3Api::class)
-class AddressInputScreenLayout(
+class TrashDayLayout(
     private val dispatch: Dispatch = { /* noop */ }
 ) {
 
     @Preview(showBackground = true)
     @Composable
     fun Render(
-        @PreviewParameter(AddressInputScreenMock::class)
-        state: State<AddressInputScreenState>
+        @PreviewParameter(TrashDayMock::class)
+        state: State<TrashDayState>
     ) {
         state.value.run {
             LazyColumn {
-                item { AddressInputField(addressInput, addressInputError) }
-                item { SubmitButton(addressInput) }
+                if (trashPickupDay.isNotBlank()) item { TrashPickUpDay(trashPickupDay) }
             }
             CenteredLoader(isLoading)
         }
     }
 
     @Composable
-    private fun AddressInputField(value: String, error: String? = null) {
-        OutlinedTextField(
-            value = value,
-            onValueChange = { dispatch(UserInputAddressText(it)) },
-            label = { Text("Address") },
-            supportingText = { error?.let{ Text(it) } },
-            isError = !error.isNullOrBlank(),
+    private fun TrashPickUpDay(trashPickUpDay: String) {
+        Text(
+            text = "Trash Pick Up Day: $trashPickUpDay",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
         )
-    }
-
-    @Composable
-    private fun SubmitButton(addressInput: String) {
-        Button(
-            onClick = { dispatch(UserSubmittedAddress(addressInput)) },
-            shape = ShapeDefaults.ExtraSmall,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 4.dp)
-        ) {
-            Text("Submit")
-        }
     }
 
     @Composable

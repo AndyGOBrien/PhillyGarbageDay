@@ -1,4 +1,4 @@
-package com.llamalabb.phillygarbageday.domain.usecase.old
+package com.llamalabb.phillygarbageday.domain.usecase._old
 
 //import com.llamalabb.phillygarbageday.data.repository.IAddressRepository
 //import com.llamalabb.phillygarbageday.domain.domain_model.HeadlineDomainModel

@@ -1,23 +1,32 @@
 package com.llamalabb.phillygarbageday.presentation.addressinput
 
-import com.llamalabb.phillygarbageday.data.remote.dto.AddressDataDTO
-import com.llamalabb.phillygarbageday.data.remote.dto.asDomainModel
-import com.llamalabb.phillygarbageday.data.repository.IAddressRepository
+import com.llamalabb.phillygarbageday.data.repository.ITrashDayRepository
 import com.llamalabb.phillygarbageday.presentation.BaseAction
+import com.llamalabb.phillygarbageday.presentation.BaseUiEvent
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import com.llamalabb.phillygarbageday.presentation.addressinput.AddressInputScreenAction.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-class AddressInputViewModel(private val repo: IAddressRepository) : ViewModel() {
+class AddressInputViewModel(private val repo: ITrashDayRepository) : ViewModel() {
 
     private val _state = MutableStateFlow(AddressInputScreenState())
     val state = _state.asStateFlow()
 
+    private val _uiEvent = MutableSharedFlow<BaseUiEvent>()
+    val uiEvent = _uiEvent.asSharedFlow()
+
     fun dispatch(action: BaseAction) {
         reduce(action, _state.value)
         launchSideEffects(action)
+    }
+
+    private fun dispatchUiEvent(uiEvent: BaseUiEvent) {
+        viewModelScope.launch { _uiEvent.emit(uiEvent) }
     }
 
     /** Reducers */
@@ -27,7 +36,6 @@ class AddressInputViewModel(private val repo: IAddressRepository) : ViewModel() 
         _state.value = state.copy(
             isLoading = reduceIsLoading(action, state),
             addressInput = reduceAddressInput(action, state),
-            trashPickUpDay = reduceTrashPickUpDay(action, state),
             addressInputError = reduceAddressInputError(action, state),
         )
     }
@@ -44,8 +52,8 @@ class AddressInputViewModel(private val repo: IAddressRepository) : ViewModel() 
         action: BaseAction,
         state: AddressInputScreenState
     ): String? = when (action) {
-        is DataLoadError -> "Please enter a valid address"
-        is DataLoadSuccess -> null
+        is AddressValidatedError -> "Please enter a valid address"
+        is AddressValidatedSuccess -> null
         else -> state.addressInputError
     }
 
@@ -53,19 +61,10 @@ class AddressInputViewModel(private val repo: IAddressRepository) : ViewModel() 
         action: BaseAction,
         state: AddressInputScreenState
     ): Boolean = when (action) {
-        is UserTappedLoadData -> true
-        is DataLoadSuccess -> false
-        is DataLoadError -> false
+        is UserSubmittedAddress -> true
+        is AddressValidatedSuccess -> false
+        is AddressValidatedError -> false
         else -> state.isLoading
-    }
-
-    private fun reduceTrashPickUpDay(
-        action: BaseAction,
-        state: AddressInputScreenState
-    ): String = when (action) {
-        is DataLoadSuccess -> action.dayOfPickUp
-        is DataLoadError -> ""
-        else -> state.trashPickUpDay
     }
 
     //endregion
@@ -75,26 +74,29 @@ class AddressInputViewModel(private val repo: IAddressRepository) : ViewModel() 
 
     private fun launchSideEffects(action: BaseAction) {
         when (action) {
-            is UserTappedLoadData -> loadAddressDataSideEffect(action.address)
+            is UserSubmittedAddress -> loadAddressDataSideEffect(action.address)
+            is AddressValidatedSuccess -> dispatchUiEvent(AddressInputUiEvent.ShowTrashDay)
             else -> Unit
         }
     }
 
     private fun loadAddressDataSideEffect(address: String) {
         viewModelScope.launch {
-            val response = AddressDataDTO(repo.getAddressInfo(address).features)
-            response.asDomainModel().garbageDay?.let { result ->
-                dispatch(DataLoadSuccess(result.name))
-            } ?: dispatch(DataLoadError)
+            val isValidAddress = repo.validateAddress(address)
+            dispatch(if (isValidAddress) AddressValidatedSuccess else AddressValidatedError)
         }
     }
 
     //endregion
 }
 
+sealed class AddressInputUiEvent : BaseUiEvent {
+    object ShowTrashDay : AddressInputUiEvent()
+}
+
 sealed class AddressInputScreenAction : BaseAction {
-    data class UserTappedLoadData(val address: String) : AddressInputScreenAction()
+    data class UserSubmittedAddress(val address: String) : AddressInputScreenAction()
     data class UserInputAddressText(val text: String) : AddressInputScreenAction()
-    data class DataLoadSuccess(val dayOfPickUp: String) : AddressInputScreenAction()
-    object DataLoadError : AddressInputScreenAction()
+    object AddressValidatedSuccess : AddressInputScreenAction()
+    object AddressValidatedError : AddressInputScreenAction()
 }

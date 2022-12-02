@@ -1,12 +1,12 @@
 package com.llamalabb.phillygarbageday.data.remote.dto
 
-import com.llamalabb.phillygarbageday.domain.domain_model.AddressData
+import com.llamalabb.phillygarbageday.domain.domain_model.AddressInfo
 import kotlinx.datetime.DayOfWeek
 import kotlinx.serialization.SerialName
 
 @kotlinx.serialization.Serializable
-data class AddressDataDTO(
-    val features: List<Feature>? = null
+data class AddressDTO(
+    val features: List<Feature>
 )
 
 @kotlinx.serialization.Serializable
@@ -17,18 +17,12 @@ data class Feature(
 @kotlinx.serialization.Serializable
 data class Properties(
     @SerialName("rubbish_recycle_day")
-    val rubbishRecycleDay: String
+    val rubbishRecycleDay: String,
+    @SerialName("street_address")
+    val streetAddress: String
 )
 
-fun AddressDataDTO.asDomainModel() = AddressData(
-    when(features?.first()?.properties?.rubbishRecycleDay) {
-        "SUN" -> DayOfWeek.SUNDAY
-        "MON" -> DayOfWeek.MONDAY
-        "TUE" -> DayOfWeek.TUESDAY
-        "WED" -> DayOfWeek.WEDNESDAY
-        "THU" -> DayOfWeek.THURSDAY
-        "FRI" -> DayOfWeek.FRIDAY
-        "SAT" -> DayOfWeek.SATURDAY
-        else -> null
-    }
+fun AddressDTO.asDomainModel() = AddressInfo(
+    streetAddress = features.first().properties.streetAddress,
+    garbageDay = DayOfWeek.valueOf(this.features.first().properties.rubbishRecycleDay)
 )

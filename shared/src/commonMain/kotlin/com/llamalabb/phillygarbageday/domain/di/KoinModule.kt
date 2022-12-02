@@ -1,12 +1,12 @@
 package com.llamalabb.phillygarbageday.domain.di
 
-import com.llamalabb.phillygarbageday.data.local.dao.HeadlineDAO
+import com.llamalabb.phillygarbageday.data.local.dao.StreetAddressDAO
 import com.llamalabb.phillygarbageday.data.local.service.IAddressRealmService
 import com.llamalabb.phillygarbageday.data.local.service.AddressRealmService
 import com.llamalabb.phillygarbageday.data.remote.service.IPhillyApiService
 import com.llamalabb.phillygarbageday.data.remote.service.PhillyApiService
-import com.llamalabb.phillygarbageday.data.repository.IAddressRepository
-import com.llamalabb.phillygarbageday.data.repository.AddressRepository
+import com.llamalabb.phillygarbageday.data.repository.ITrashDayRepository
+import com.llamalabb.phillygarbageday.data.repository.TrashDayRepository
 import com.llamalabb.phillygarbageday.platformModule
 import io.ktor.client.*
 import io.ktor.client.engine.*
@@ -40,13 +40,13 @@ fun getHelperModule() = module { }
 
 fun getDateModule(enableNetworkLogs: Boolean) = module {
 
-    single<IAddressRepository> { AddressRepository(get(), get()) }
+    single<ITrashDayRepository> { TrashDayRepository(get(), get()) }
 
     single<IPhillyApiService> { PhillyApiService(get()) }
 
     single<IAddressRealmService> { AddressRealmService(get()) }
 
-    single { Realm.open(RealmConfiguration.Builder(schema = setOf(HeadlineDAO::class)).build()) }
+    single { Realm.open(RealmConfiguration.Builder(schema = setOf(StreetAddressDAO::class)).build()) }
 
     single { createJson() }
 

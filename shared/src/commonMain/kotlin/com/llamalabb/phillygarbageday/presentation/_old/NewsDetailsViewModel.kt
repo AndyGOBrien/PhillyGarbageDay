@@ -1,4 +1,4 @@
-package com.llamalabb.phillygarbageday.presentation.old
+package com.llamalabb.phillygarbageday.presentation._old
 
 //import com.llamalabb.phillygarbageday.domain.domain_model.HeadlineDomainModel
 //import com.llamalabb.phillygarbageday.domain.usecase.newsdetails.AddToReadLaterUseCase

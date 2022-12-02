@@ -1,9 +1,7 @@
 package com.llamalabb.phillygarbageday.data.local.service
 
-import com.llamalabb.phillygarbageday.data.local.dao.HeadlineDAO
-
 interface IAddressRealmService{
-    suspend fun addToReadLater(headlineDAO: HeadlineDAO)
+    suspend fun saveStreetAddress(address: String)
 
-    suspend fun getReadLater(): List<HeadlineDAO>
+    suspend fun getStreetAddress(): String?
 }

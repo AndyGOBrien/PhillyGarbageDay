@@ -21,7 +21,6 @@ class AddressInputScreenMock : PreviewParameterProvider<State<AddressInputScreen
     private fun getLoadedState() = mutableStateOf(
         AddressInputScreenState(
             isLoading = false,
-            trashPickUpDay = "Wednesday"
         )
     )
 }
