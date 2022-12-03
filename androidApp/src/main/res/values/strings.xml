@@ -6,4 +6,5 @@
     <string name="app_heading">KMM News</string>
     <string name="adding_to_read_later">Addding To Read Later</string>
     <string name="added_to_read_later">Added to read later.</string>
+    <string name="address">Address</string>
 </resources>
