@@ -1,13 +1,9 @@
 package com.llamalabb.phillygarbageday.domain.util
 
+import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.todayAt
 
-fun toLocalDate(date: String): String {
-
-    val local = date.toInstant().toLocalDateTime(TimeZone.currentSystemDefault())
-
-    return "${local.year}-${local.month}-${local.dayOfMonth} "
-
-}
+fun Clock.localToday() = todayAt(TimeZone.currentSystemDefault())

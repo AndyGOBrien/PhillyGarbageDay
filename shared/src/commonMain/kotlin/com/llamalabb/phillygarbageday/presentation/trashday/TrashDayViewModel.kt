@@ -3,12 +3,18 @@ package com.llamalabb.phillygarbageday.presentation.trashday
 import com.llamalabb.phillygarbageday.data.repository.ITrashDayRepository
 import com.llamalabb.phillygarbageday.domain.domain_model.AddressInfo
 import com.llamalabb.phillygarbageday.domain.domain_model.Holiday
+import com.llamalabb.phillygarbageday.domain.util.localToday
 import com.llamalabb.phillygarbageday.presentation.BaseAction
 import com.llamalabb.phillygarbageday.presentation.trashday.TrashDayAction.*
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
 
@@ -47,9 +53,9 @@ class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
     private fun reduceTrashPickupDay(
         action: BaseAction,
         state: TrashDayState
-    ): String = when (action) {
+    ): String? = when (action) {
         is LoadDataSuccess -> action.addressInfo.garbageDay.name
-        is LoadDataFailure -> ""
+        is LoadDataFailure -> null
         else -> state.trashPickupDay
     }
 
@@ -65,9 +71,9 @@ class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
     private fun reduceStreetAddress(
         action: BaseAction,
         state: TrashDayState
-    ): String = when (action) {
+    ): String? = when (action) {
         is LoadDataSuccess -> action.addressInfo.streetAddress
-        is LoadDataFailure -> ""
+        is LoadDataFailure -> null
         else -> state.streetAddress
     }
 
@@ -86,7 +92,10 @@ class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
     private fun loadDataSideEffect() {
         viewModelScope.launch {
             try {
-                dispatch(LoadDataSuccess(repo.fetchAddressInfo(), repo.fetchHolidays()))
+                val addressInfo = repo.fetchAddressInfo()
+                val today = Clock.System.localToday()
+                val remainingHolidays = repo.fetchHolidays().filter { it.date >= today }
+                dispatch(LoadDataSuccess(addressInfo, remainingHolidays))
             } catch (e: Exception) {
                 dispatch(LoadDataFailure(e))
             }

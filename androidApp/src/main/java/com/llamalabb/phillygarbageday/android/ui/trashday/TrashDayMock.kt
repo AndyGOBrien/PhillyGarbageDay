@@ -19,7 +19,8 @@ class TrashDayMock : PreviewParameterProvider<State<TrashDayState>> {
     private fun getLoadedState() = mutableStateOf(
         TrashDayState(
             isLoading = false,
-            trashPickupDay = "Wednesday"
+            trashPickupDay = "Wednesday",
+            streetAddress = "1608 S 12th ST"
         )
     )
 }
