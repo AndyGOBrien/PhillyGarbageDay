@@ -4,10 +4,12 @@ import com.llamalabb.phillygarbageday.domain.domain_model.Holiday
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.SerialName
 
+@kotlinx.serialization.Serializable
 data class HolidaysDTO(
     val holidays: List<HolidayDTO>
 )
 
+@kotlinx.serialization.Serializable
 data class HolidayDTO(
     @SerialName("holiday_label")
     val holidayLabel: String,

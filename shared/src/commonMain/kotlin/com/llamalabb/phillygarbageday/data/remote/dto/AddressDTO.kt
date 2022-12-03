@@ -24,5 +24,16 @@ data class Properties(
 
 fun AddressDTO.asDomainModel() = AddressInfo(
     streetAddress = features.first().properties.streetAddress,
-    garbageDay = DayOfWeek.valueOf(this.features.first().properties.rubbishRecycleDay)
+    garbageDay = when(features.first().properties.rubbishRecycleDay) {
+        "SUN" -> DayOfWeek.SUNDAY
+        "MON" -> DayOfWeek.MONDAY
+        "TUE" -> DayOfWeek.TUESDAY
+        "WED" -> DayOfWeek.WEDNESDAY
+        "THU" -> DayOfWeek.THURSDAY
+        "FRI" -> DayOfWeek.FRIDAY
+        "SAT" -> DayOfWeek.SATURDAY
+        else -> throw DayOfWeekDoesNotExist()
+    }
 )
+
+class DayOfWeekDoesNotExist : Exception()
