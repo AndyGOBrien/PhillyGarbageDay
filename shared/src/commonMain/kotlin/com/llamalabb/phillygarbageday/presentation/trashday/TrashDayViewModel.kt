@@ -5,9 +5,13 @@ import com.llamalabb.phillygarbageday.domain.domain_model.AddressInfo
 import com.llamalabb.phillygarbageday.domain.domain_model.Holiday
 import com.llamalabb.phillygarbageday.domain.util.localToday
 import com.llamalabb.phillygarbageday.presentation.BaseAction
+import com.llamalabb.phillygarbageday.presentation.BaseUiEvent
+import com.llamalabb.phillygarbageday.presentation.addressinput.Navigation
 import com.llamalabb.phillygarbageday.presentation.trashday.TrashDayAction.*
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -21,11 +25,18 @@ class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
     private val _state = MutableStateFlow(TrashDayState())
     val state = _state.asStateFlow()
 
+    private val _uiEvent = MutableSharedFlow<BaseUiEvent>()
+    val uiEvent = _uiEvent.asSharedFlow()
+
     init { dispatch(LoadData) }
 
     fun dispatch(action: BaseAction) {
         reduce(action, _state.value)
         launchSideEffects(action)
+    }
+
+    private fun dispatchUiEvent(uiEvent: BaseUiEvent) {
+        viewModelScope.launch { _uiEvent.emit(uiEvent) }
     }
 
     /** Reducers */
@@ -85,6 +96,7 @@ class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
     private fun launchSideEffects(action: BaseAction) {
         when (action) {
             is LoadData -> loadDataSideEffect()
+            is UserTappedEditAddress -> dispatchUiEvent(Navigation.ShowAddressInput)
             else -> Unit
         }
     }
@@ -112,4 +124,5 @@ sealed class TrashDayAction : BaseAction {
         val holidays: List<Holiday>
     ) : TrashDayAction()
     data class LoadDataFailure(val error: Exception) : TrashDayAction()
+    object UserTappedEditAddress : TrashDayAction()
 }

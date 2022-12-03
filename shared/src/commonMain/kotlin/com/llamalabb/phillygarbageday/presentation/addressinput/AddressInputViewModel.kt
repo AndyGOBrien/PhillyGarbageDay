@@ -75,7 +75,7 @@ class AddressInputViewModel(private val repo: ITrashDayRepository) : ViewModel()
     private fun launchSideEffects(action: BaseAction) {
         when (action) {
             is UserSubmittedAddress -> loadAddressDataSideEffect(action.address)
-            is AddressValidatedSuccess -> dispatchUiEvent(AddressInputUiEvent.ShowTrashDay)
+            is AddressValidatedSuccess -> dispatchUiEvent(Navigation.ShowTrashDay)
             else -> Unit
         }
     }
@@ -90,8 +90,9 @@ class AddressInputViewModel(private val repo: ITrashDayRepository) : ViewModel()
     //endregion
 }
 
-sealed class AddressInputUiEvent : BaseUiEvent {
-    object ShowTrashDay : AddressInputUiEvent()
+sealed class Navigation : BaseUiEvent {
+    object ShowTrashDay : Navigation()
+    object ShowAddressInput : Navigation()
 }
 
 sealed class AddressInputScreenAction : BaseAction {
