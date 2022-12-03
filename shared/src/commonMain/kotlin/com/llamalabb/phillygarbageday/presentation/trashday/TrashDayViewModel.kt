@@ -14,11 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.*
 
 class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
 
@@ -28,7 +24,9 @@ class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
     private val _uiEvent = MutableSharedFlow<BaseUiEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
 
-    init { dispatch(LoadData) }
+    init {
+        dispatch(LoadData)
+    }
 
     fun dispatch(action: BaseAction) {
         reduce(action, _state.value)
@@ -65,9 +63,45 @@ class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
         action: BaseAction,
         state: TrashDayState
     ): String? = when (action) {
-        is LoadDataSuccess -> action.addressInfo.garbageDay.name
+        is LoadDataSuccess -> evaluateTrashDay(action)
         is LoadDataFailure -> null
         else -> state.trashPickupDay
+    }
+
+    private fun evaluateTrashDay(action: LoadDataSuccess): String? {
+        val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        val days = mutableListOf<LocalDate>()
+        // week starts on Monday and goes to Sunday.
+        val firstWeekDay =
+            today.minus(DayOfWeek.values().indexOf(today.dayOfWeek), DateTimeUnit.DAY)
+        for (i in 0 until DayOfWeek.values().count()) {
+            days.add(firstWeekDay.plus(i, DateTimeUnit.DAY))
+        }
+        val dayStrings = days.map { "${it.dayOfWeek}, ${it.dayOfMonth}" }
+
+        val fakeHolidayWouldMove = Holiday("moveTrashDay", days[1])
+        val fakeHolidayWouldNotMove = Holiday("doNotMoveTrashDay", days[4])
+
+        // throw away to generate a list with a holiday that would cause a moved date
+        // may need to test something like thanksgiving where there are 2 back to back dates
+        val testHolidays = action.holidays.toMutableList().apply {
+            add(fakeHolidayWouldNotMove)
+        }
+
+        // Check if there is a holiday which has a date in the given week.
+        val holidayOnWeek = testHolidays.firstOrNull {
+            days.indexOf(it.date) >= 0
+        }
+
+        // Can probably clean this up, but default trash date object and then update if less than
+        var trashDay = days.first { it.dayOfWeek.name == action.addressInfo.garbageDay.name }
+        holidayOnWeek?.let {
+            if (holidayOnWeek.date <= trashDay) {
+                trashDay = trashDay.plus(1, DateTimeUnit.DAY)//.dayOfWeek.name
+            }
+        }
+
+        return trashDay.dayOfWeek.name
     }
 
     private fun reduceHolidays(
@@ -123,6 +157,7 @@ sealed class TrashDayAction : BaseAction {
         val addressInfo: AddressInfo,
         val holidays: List<Holiday>
     ) : TrashDayAction()
+
     data class LoadDataFailure(val error: Exception) : TrashDayAction()
     object UserTappedEditAddress : TrashDayAction()
 }
