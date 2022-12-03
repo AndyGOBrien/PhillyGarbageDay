@@ -20,7 +20,10 @@ fun AddressInputScreen(
 ) {
     val layoutManager = AddressInputScreenLayout(viewModel::dispatch)
     layoutManager.Render(viewModel.state.collectAsState())
-    when (viewModel.uiEvent.collectAsState(GenericUiEvent.None).value) {
+
+    val uiEventFlow = viewModel.uiEvent.collectAsState(GenericUiEvent.None)
+    when (uiEventFlow.value) {
         is AddressInputUiEvent.ShowTrashDay -> navigator.navigate(TrashDayScreenDestination())
     }
+
 }
