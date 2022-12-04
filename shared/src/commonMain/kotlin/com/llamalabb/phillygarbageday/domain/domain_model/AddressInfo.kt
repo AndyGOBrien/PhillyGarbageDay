@@ -4,5 +4,5 @@ import kotlinx.datetime.DayOfWeek
 
 data class AddressInfo(
     val streetAddress: String,
-    val garbageDay: DayOfWeek
+    val collectionDay: DayOfWeek
 )

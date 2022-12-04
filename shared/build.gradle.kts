@@ -55,7 +55,6 @@ kotlin {
                     implementation(realm)
                 }
                 with(Koin) {
-
                     implementation(koin)
                 }
                 with(Kotlinx) {
@@ -82,7 +81,6 @@ kotlin {
             dependencies {
                 implementation(Ktor.clientAndroid)
                 implementation(Koin.koinAndroid)
-
             }
         }
         val androidTest by getting

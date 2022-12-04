@@ -48,7 +48,7 @@ class TrashDayLayout(
         state.value.run {
             LazyColumn {
                 item { Title(streetAddress) }
-                item { TrashPickUpDay(trashPickupDay) }
+                item { TrashPickUpDay(nextTrashDay) }
             }
             CenteredLoader(isLoading)
         }

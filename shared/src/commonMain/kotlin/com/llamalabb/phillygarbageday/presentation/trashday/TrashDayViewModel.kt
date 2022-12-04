@@ -1,9 +1,13 @@
 package com.llamalabb.phillygarbageday.presentation.trashday
 
 import com.llamalabb.phillygarbageday.data.repository.ITrashDayRepository
-import com.llamalabb.phillygarbageday.domain.domain_model.AddressInfo
 import com.llamalabb.phillygarbageday.domain.domain_model.Holiday
+import com.llamalabb.phillygarbageday.domain.util.fullDateFormat
 import com.llamalabb.phillygarbageday.domain.util.localToday
+import com.llamalabb.phillygarbageday.domain.util.minusDays
+import com.llamalabb.phillygarbageday.domain.util.ordinal
+import com.llamalabb.phillygarbageday.domain.util.plusDays
+import com.llamalabb.phillygarbageday.domain.util.startOfWeek
 import com.llamalabb.phillygarbageday.presentation.BaseAction
 import com.llamalabb.phillygarbageday.presentation.BaseUiEvent
 import com.llamalabb.phillygarbageday.presentation.addressinput.Navigation
@@ -43,7 +47,7 @@ class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
     private fun reduce(action: BaseAction, state: TrashDayState) {
         _state.value = state.copy(
             isLoading = reduceIsLoading(action, state),
-            trashPickupDay = reduceTrashPickupDay(action, state),
+            nextTrashDay = reduceNextTrashDay(action, state),
             holidays = reduceHolidays(action, state),
             streetAddress = reduceStreetAddress(action, state),
         )
@@ -59,49 +63,13 @@ class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
         else -> state.isLoading
     }
 
-    private fun reduceTrashPickupDay(
+    private fun reduceNextTrashDay(
         action: BaseAction,
         state: TrashDayState
     ): String? = when (action) {
-        is LoadDataSuccess -> evaluateTrashDay(action)
+        is LoadDataSuccess -> action.nextGarbageDay.fullDateFormat()
         is LoadDataFailure -> null
-        else -> state.trashPickupDay
-    }
-
-    private fun evaluateTrashDay(action: LoadDataSuccess): String? {
-        val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-        val days = mutableListOf<LocalDate>()
-        // week starts on Monday and goes to Sunday.
-        val firstWeekDay =
-            today.minus(DayOfWeek.values().indexOf(today.dayOfWeek), DateTimeUnit.DAY)
-        for (i in 0 until DayOfWeek.values().count()) {
-            days.add(firstWeekDay.plus(i, DateTimeUnit.DAY))
-        }
-        val dayStrings = days.map { "${it.dayOfWeek}, ${it.dayOfMonth}" }
-
-        val fakeHolidayWouldMove = Holiday("moveTrashDay", days[1])
-        val fakeHolidayWouldNotMove = Holiday("doNotMoveTrashDay", days[4])
-
-        // throw away to generate a list with a holiday that would cause a moved date
-        // may need to test something like thanksgiving where there are 2 back to back dates
-        val testHolidays = action.holidays.toMutableList().apply {
-            add(fakeHolidayWouldNotMove)
-        }
-
-        // Check if there is a holiday which has a date in the given week.
-        val holidayOnWeek = testHolidays.firstOrNull {
-            days.indexOf(it.date) >= 0
-        }
-
-        // Can probably clean this up, but default trash date object and then update if less than
-        var trashDay = days.first { it.dayOfWeek.name == action.addressInfo.garbageDay.name }
-        holidayOnWeek?.let {
-            if (holidayOnWeek.date <= trashDay) {
-                trashDay = trashDay.plus(1, DateTimeUnit.DAY)//.dayOfWeek.name
-            }
-        }
-
-        return trashDay.dayOfWeek.name
+        else -> state.nextTrashDay
     }
 
     private fun reduceHolidays(
@@ -117,7 +85,7 @@ class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
         action: BaseAction,
         state: TrashDayState
     ): String? = when (action) {
-        is LoadDataSuccess -> action.addressInfo.streetAddress
+        is LoadDataSuccess -> action.streetAddress
         is LoadDataFailure -> null
         else -> state.streetAddress
     }
@@ -139,9 +107,13 @@ class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
         viewModelScope.launch {
             try {
                 val addressInfo = repo.fetchAddressInfo()
+                val holidays = repo.fetchHolidays()
                 val today = Clock.System.localToday()
-                val remainingHolidays = repo.fetchHolidays().filter { it.date >= today }
-                dispatch(LoadDataSuccess(addressInfo, remainingHolidays))
+
+                val streetAddress = addressInfo.streetAddress
+                val remainingHolidays = holidays.filter { it.date >= today.startOfWeek() }
+                val nextGarbageDay = getNextTrashDay(addressInfo.collectionDay, remainingHolidays)
+                dispatch(LoadDataSuccess(streetAddress, nextGarbageDay, remainingHolidays))
             } catch (e: Exception) {
                 dispatch(LoadDataFailure(e))
             }
@@ -149,12 +121,28 @@ class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
     }
 
     //endregion
+
+    /** Helper Functions */
+
+    private fun getNextTrashDay(rawTrashDay: DayOfWeek, holidays: List<Holiday>): LocalDate {
+
+        var trashDate = Clock.System.localToday()
+        while (trashDate.dayOfWeek != rawTrashDay) { trashDate = trashDate.plusDays(1) }
+        val startOfWeek = trashDate.minusDays(trashDate.dayOfWeek.isoDayNumber)
+        holidays.forEach { holiday ->
+            if (holiday.date in startOfWeek..trashDate) trashDate = trashDate.plusDays(1)
+        }
+
+        return trashDate
+    }
+
 }
 
 sealed class TrashDayAction : BaseAction {
     object LoadData : TrashDayAction()
     data class LoadDataSuccess(
-        val addressInfo: AddressInfo,
+        val streetAddress: String,
+        val nextGarbageDay: LocalDate,
         val holidays: List<Holiday>
     ) : TrashDayAction()
 
