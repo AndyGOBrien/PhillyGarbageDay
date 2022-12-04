@@ -5,7 +5,6 @@ import com.llamalabb.phillygarbageday.domain.domain_model.Holiday
 import com.llamalabb.phillygarbageday.domain.util.fullDateFormat
 import com.llamalabb.phillygarbageday.domain.util.localToday
 import com.llamalabb.phillygarbageday.domain.util.minusDays
-import com.llamalabb.phillygarbageday.domain.util.ordinal
 import com.llamalabb.phillygarbageday.domain.util.plusDays
 import com.llamalabb.phillygarbageday.domain.util.startOfWeek
 import com.llamalabb.phillygarbageday.presentation.BaseAction
@@ -75,8 +74,8 @@ class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
     private fun reduceHolidays(
         action: BaseAction,
         state: TrashDayState,
-    ): List<Holiday> = when (action) {
-        is LoadDataSuccess -> action.holidays
+    ): List<HolidayItem> = when (action) {
+        is LoadDataSuccess -> action.holidayItems
         is LoadDataFailure -> emptyList()
         else -> state.holidays
     }
@@ -113,7 +112,14 @@ class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
                 val streetAddress = addressInfo.streetAddress
                 val remainingHolidays = holidays.filter { it.date >= today.startOfWeek() }
                 val nextGarbageDay = getNextTrashDay(addressInfo.collectionDay, remainingHolidays)
-                dispatch(LoadDataSuccess(streetAddress, nextGarbageDay, remainingHolidays))
+                val holidayItems = remainingHolidays.map { holiday ->
+                    HolidayItem(
+                        holiday.label,
+                        holiday.date.fullDateFormat(),
+                        getHolidayWeekTrashDay(addressInfo.collectionDay, holiday).fullDateFormat()
+                    )
+                }
+                dispatch(LoadDataSuccess(streetAddress, nextGarbageDay, holidayItems))
             } catch (e: Exception) {
                 dispatch(LoadDataFailure(e))
             }
@@ -125,14 +131,20 @@ class TrashDayViewModel(private val repo: ITrashDayRepository) : ViewModel() {
     /** Helper Functions */
 
     private fun getNextTrashDay(rawTrashDay: DayOfWeek, holidays: List<Holiday>): LocalDate {
-
         var trashDate = Clock.System.localToday()
         while (trashDate.dayOfWeek != rawTrashDay) { trashDate = trashDate.plusDays(1) }
         val startOfWeek = trashDate.minusDays(trashDate.dayOfWeek.isoDayNumber)
         holidays.forEach { holiday ->
             if (holiday.date in startOfWeek..trashDate) trashDate = trashDate.plusDays(1)
         }
+        return trashDate
+    }
 
+    private fun getHolidayWeekTrashDay(rawTrashDay: DayOfWeek, holiday: Holiday): LocalDate {
+        var trashDate = holiday.date
+        while (trashDate.dayOfWeek != rawTrashDay) { trashDate = trashDate.plusDays(1) }
+        val startOfWeek = trashDate.minusDays(trashDate.dayOfWeek.isoDayNumber)
+        if (holiday.date in startOfWeek..trashDate) trashDate = trashDate.plusDays(1)
         return trashDate
     }
 
@@ -143,7 +155,7 @@ sealed class TrashDayAction : BaseAction {
     data class LoadDataSuccess(
         val streetAddress: String,
         val nextGarbageDay: LocalDate,
-        val holidays: List<Holiday>
+        val holidayItems: List<HolidayItem>
     ) : TrashDayAction()
 
     data class LoadDataFailure(val error: Exception) : TrashDayAction()
