@@ -3,7 +3,6 @@ package com.llamalabb.phillygarbageday.android.ui.trashday
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.llamalabb.phillygarbageday.presentation.addressinput.AddressInputScreenState
 import com.llamalabb.phillygarbageday.presentation.trashday.TrashDayState
 
 
@@ -19,7 +18,7 @@ class TrashDayMock : PreviewParameterProvider<State<TrashDayState>> {
     private fun getLoadedState() = mutableStateOf(
         TrashDayState(
             isLoading = false,
-            trashPickupDay = "Wednesday, December 6th",
+            nextTrashDay = "Wednesday, December 6th",
             streetAddress = "1608 S 12th ST"
         )
     )
