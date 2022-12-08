@@ -20,7 +20,7 @@ public class AddressInputObservableObject : ObservableObject {
     */
     @Published private(set) var state: AddressInputScreenState
     
-    @Published private(set) var event: BaseUiEvent
+    @Published private(set) var uiEvent: BaseUiEvent
         
         
     /**
@@ -31,15 +31,15 @@ public class AddressInputObservableObject : ObservableObject {
 
         viewModel = wrapped
         state = wrapped.state.value as! AddressInputScreenState
-        event = GenericUiEvent.None()
-        
-        (wrapped.uiEvent.asPublisher() as AnyPublisher<BaseUiEvent, Never>)
-            .receive(on: RunLoop.main)
-            .assign(to: &$event)
+        uiEvent = GenericUiEvent.None()
         
         (wrapped.state.asPublisher() as AnyPublisher<AddressInputScreenState, Never>)
             .receive(on: RunLoop.main)
             .assign(to: &$state)
+        
+        (wrapped.uiEvent.asPublisher() as AnyPublisher<BaseUiEvent, Never>)
+            .receive(on: RunLoop.main)
+            .assign(to: &$uiEvent)
         
     }
 
