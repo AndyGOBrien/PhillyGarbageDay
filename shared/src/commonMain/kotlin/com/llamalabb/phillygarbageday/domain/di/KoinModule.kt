@@ -24,11 +24,10 @@ import org.koin.dsl.module
 fun initKoin(
     enableNetworkLogs: Boolean = false,
     appDeclaration: KoinAppDeclaration = {}
-) =
-    startKoin {
-        appDeclaration()
-        modules(commonModule(enableNetworkLogs = enableNetworkLogs))
-    }
+) = startKoin {
+    appDeclaration()
+    modules(commonModule(enableNetworkLogs = enableNetworkLogs))
+}
 
 // called by iOS etc
 fun initKoin() = initKoin(enableNetworkLogs = true) {}
@@ -71,18 +70,17 @@ fun createHttpClient(
     httpClientEngine: HttpClientEngine,
     json: Json,
     enableNetworkLogs: Boolean
-) =
-    HttpClient(httpClientEngine) {
+) = HttpClient(httpClientEngine) {
 
-        install(ContentNegotiation) { json(json) }
+    install(ContentNegotiation) { json(json) }
 
-        if (enableNetworkLogs) {
-            install(Logging) {
-                logger = Logger.SIMPLE
-                level = LogLevel.ALL
-            }
+    if (enableNetworkLogs) {
+        install(Logging) {
+            logger = Logger.SIMPLE
+            level = LogLevel.ALL
         }
     }
+}
 
 fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }
 

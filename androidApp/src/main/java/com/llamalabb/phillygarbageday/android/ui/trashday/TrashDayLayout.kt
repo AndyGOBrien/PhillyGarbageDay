@@ -1,6 +1,5 @@
 package com.llamalabb.phillygarbageday.android.ui.trashday
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row

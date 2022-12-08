@@ -23,10 +23,7 @@ fun <T> Flow<T>.asResult(): Flow<Result<T>> {
         .onStart { emit(Result.Loading) }
         .catch {
             it.printStackTrace()
-
-                emit(Result.Error((it as Exception).getRealException()))
-
-
+            emit(Result.Error((it as Exception).getRealException()))
         }
 }
 

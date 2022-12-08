@@ -11,6 +11,10 @@
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
+		E2342252293F8D210034AF0B /* AddressInputScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2342251293F8D210034AF0B /* AddressInputScreen.swift */; };
+		E2B757642940E94B00976CFA /* TrashDayScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B757632940E94B00976CFA /* TrashDayScreen.swift */; };
+		E2B757662940E9AD00976CFA /* TrashDayObservableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B757652940E9AD00976CFA /* TrashDayObservableObject.swift */; };
+		E2FD0210293F997E0020FB08 /* AddressInputObservableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FD020F293F997E0020FB08 /* AddressInputObservableObject.swift */; };
 		EE06F06D28A7F860009822B4 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE06F06C28A7F860009822B4 /* Home.swift */; };
 		EE06F07028A7F8DD009822B4 /* FlowPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE06F06F28A7F8DD009822B4 /* FlowPublisher.swift */; };
 		EE06F07428A7F95D009822B4 /* HomeObservableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE06F07328A7F95D009822B4 /* HomeObservableObject.swift */; };
@@ -34,7 +38,11 @@
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E0F07EFDF2B280E651ADF2E8 /* Pods-iosApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iosApp.debug.xcconfig"; path = "Target Support Files/Pods-iosApp/Pods-iosApp.debug.xcconfig"; sourceTree = "<group>"; };
-		EE06F06C28A7F860009822B4 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		E2342251293F8D210034AF0B /* AddressInputScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInputScreen.swift; sourceTree = "<group>"; };
+		E2B757632940E94B00976CFA /* TrashDayScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashDayScreen.swift; sourceTree = "<group>"; };
+		E2B757652940E9AD00976CFA /* TrashDayObservableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashDayObservableObject.swift; sourceTree = "<group>"; };
+		E2FD020F293F997E0020FB08 /* AddressInputObservableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInputObservableObject.swift; sourceTree = "<group>"; };
+		EE06F06C28A7F860009822B4 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Home.swift; path = iosApp/Presentation/Home/Home.swift; sourceTree = SOURCE_ROOT; };
 		EE06F06F28A7F8DD009822B4 /* FlowPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowPublisher.swift; sourceTree = "<group>"; };
 		EE06F07328A7F95D009822B4 /* HomeObservableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeObservableObject.swift; sourceTree = "<group>"; };
 		EE06F07528A85406009822B4 /* HeadlineRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadlineRow.swift; sourceTree = "<group>"; };
@@ -117,6 +125,24 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		E2342250293F8CF40034AF0B /* AddressInput */ = {
+			isa = PBXGroup;
+			children = (
+				E2342251293F8D210034AF0B /* AddressInputScreen.swift */,
+				E2FD020F293F997E0020FB08 /* AddressInputObservableObject.swift */,
+			);
+			path = AddressInput;
+			sourceTree = "<group>";
+		};
+		E2B757622940E92900976CFA /* TrashDay */ = {
+			isa = PBXGroup;
+			children = (
+				E2B757632940E94B00976CFA /* TrashDayScreen.swift */,
+				E2B757652940E9AD00976CFA /* TrashDayObservableObject.swift */,
+			);
+			path = TrashDay;
+			sourceTree = "<group>";
+		};
 		EE06F06A28A7F83A009822B4 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +154,8 @@
 		EE06F06B28A7F845009822B4 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				E2B757622940E92900976CFA /* TrashDay */,
+				E2342250293F8CF40034AF0B /* AddressInput */,
 				EE37490F2901CEBA0042E446 /* ReadLater */,
 				EE37490E2901C4800042E446 /* Components */,
 				EE8C840728D8F8A20047E2FF /* NewsDetails */,
@@ -279,8 +307,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE06F07628A85406009822B4 /* HeadlineRow.swift in Sources */,
+				E2B757662940E9AD00976CFA /* TrashDayObservableObject.swift in Sources */,
 				EE37490B2901A52B0042E446 /* NewsDetailsObservableObject.swift in Sources */,
 				EE8C840B28D8FA5E0047E2FF /* HeadlinesWebView.swift in Sources */,
+				E2342252293F8D210034AF0B /* AddressInputScreen.swift in Sources */,
 				EE37490D2901C4640042E446 /* SnackBar.swift in Sources */,
 				EE06F07028A7F8DD009822B4 /* FlowPublisher.swift in Sources */,
 				EE06F07828A8550E009822B4 /* ViewExtensions.swift in Sources */,
@@ -291,6 +321,8 @@
 				EE3749132901CF280042E446 /* ReadLaterObservableObject.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
 				EE06F06D28A7F860009822B4 /* Home.swift in Sources */,
+				E2FD0210293F997E0020FB08 /* AddressInputObservableObject.swift in Sources */,
+				E2B757642940E94B00976CFA /* TrashDayScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,7 +462,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = orgIdentifier.iosApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -451,7 +483,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = orgIdentifier.iosApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

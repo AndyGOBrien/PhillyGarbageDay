@@ -1,6 +1,7 @@
 package com.llamalabb.phillygarbageday
 
 import com.llamalabb.phillygarbageday.presentation.addressinput.AddressInputViewModel
+import com.llamalabb.phillygarbageday.presentation.trashday.TrashDayViewModel
 import io.ktor.client.engine.darwin.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -12,6 +13,7 @@ actual fun platformModule() = module {
     //single or factory can be used to get a view-model object for swiftui
 
     single { AddressInputViewModel(get()) }
+    single { TrashDayViewModel(get()) }
 }
 
 /**
@@ -21,6 +23,7 @@ actual fun platformModule() = module {
  */
 object ViewModels : KoinComponent {
     fun getAddressViewModel() = get<AddressInputViewModel>()
+    fun getTrashDayViewModel() = get<TrashDayViewModel>()
 }
 
 
